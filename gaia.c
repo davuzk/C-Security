@@ -13,48 +13,64 @@
 
 #define NETWORK_ERROR -1
 
-/* dlstn port scanner aka gaia*/
+struct cvsparser
+{
+	const char *targethost_scan;
+	signed int socket_initializer;
+	signed int startingport;
+	signed int endingport;
+	signed int finalport;
+	signed int timerange;
+};
+
+/*--------------------------------------------------------------------*/
+
+void gaia_usage(const char *prog)
+{
+	fprintf(stderr,"Usage: %s -host <host> -port <start port> <end port>\n", prog);
+	exit(-1);
+}
+
+/*--------------------------------------------------------------------*/
+
 int main(int argc, char** argv)
 {
-    signed int socket_initializer, startingport, endingport, finalport, timerange;
+	if(argc < 4)
+		gaia_usage(argv[0]);
+		
+    struct cvsparser args;
+    
     struct sockaddr_in addr;
 	
-	if(argc < 4)
-	{
-		fprintf(stderr,"[ GAIA (Gateway Analycis Interface Application) Port Scanner | Davuzk ]\n"\
-		"Usage: %s <host> <start port> <end port>\n", argv[0]);
-		exit(0);
-	}
-
-    if((socket_initializer = socket(AF_INET, SOCK_STREAM, 0)) == -NETWORK_ERROR)
+    if((args.socket_initializer = socket(AF_INET, SOCK_STREAM, 0)) == NETWORK_ERROR)
     {
         printf("Could not create socket!\n");
-        exit(1);
+        exit(-1);
     }
-	startingport = atoi(argv[2]),endingport = atoi(argv[3]);
+	args.startingport = atoi(argv[2]), args.endingport = atoi(argv[3]);
 	
-    printf("\n[*] Starting scan at: %s port: %d end port: %d\n\n", argv[1], startingport, endingport);
+    printf("\n[*] Starting scan at: %s port: %d end port: %d\n\n", argv[1], args.startingport, args.endingport);
     
-	for(finalport = startingport; finalport <= endingport; finalport++)
+	for(args.finalport = args.startingport; args.finalport <= args.endingport; args.finalport++)
 	{
-		for(startingport = startingport; startingport<=endingport; startingport++)
+		for(args.startingport = args.startingport; args.startingport<=args.endingport; args.startingport++)
 		{
+
 			addr.sin_addr.s_addr = inet_addr(argv[1]);
    			addr.sin_family = AF_INET;
-    		addr.sin_port = htons(startingport);
+    		        addr.sin_port = htons(args.startingport);
 			
-			if(connect(socket_initializer,( struct sockaddr*)&addr, sizeof(addr)) < 0)
-    		{
-       			printf("[-] Port: %d/%d is closed at host: %s\n\n", startingport, endingport, argv[1]);
-    		}
-    		else
-    		{
-        		printf("[+] Port: %d/%d is open at host: %s\n\n", startingport, endingport, argv[1]);
-    		}
+			if(connect(args.socket_initializer,( struct sockaddr*)&addr, sizeof(addr)) < 0)
+       			    printf("[-] Port: %d/%d is closed at host: %s\n\n", args.startingport, args.endingport, argv[1]);
+    		        else
+        		    printf("[+] Port: %d/%d is open at host: %s\n\n", args.startingport, args.endingport, argv[1]);
+    		
 		}
     	
-	}
 	
-	close(socket_initializer);
+	}
+	close(args.socket_initializer);
    
 }
+
+/*--------------------------------------------------------------------*/
