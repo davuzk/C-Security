@@ -1,5 +1,5 @@
 /*
-# Name: Gaia (Gateway Anaöycis Interface Application).
+# Name: Gaia (Gateway Analycis Interface Application).
 # Program type: Port scanner.
 # Author: Davuzk aka Dauxna/Thedabosk189
 # Date: 2015-09-27.
