@@ -35,8 +35,8 @@ void gaia_usage(const char *prog)
 
 int main(int argc, char** argv)
 {
-	if(argc < 4)
-		gaia_usage(argv[0]);
+    if(argc != 4)
+	gaia_usage(argv[0]);
 		
     struct cvsparser args;
     
