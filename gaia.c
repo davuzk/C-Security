@@ -27,7 +27,7 @@ struct cvsparser
 
 void gaia_usage(const char *prog)
 {
-	fprintf(stderr,"Usage: %s -host <host> -port <start port> <end port>\n", prog);
+	fprintf(stderr,"Usage: %s <target_host> <start port> <end port>\n", prog);
 	exit(-1);
 }
 
