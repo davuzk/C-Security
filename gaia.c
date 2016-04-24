@@ -47,7 +47,8 @@ int main(int argc, char** argv)
         printf("Could not create socket!\n");
         exit(-1);
     }
-	args.startingport = atoi(argv[2]), args.endingport = atoi(argv[3]);
+    
+    args.startingport = atoi(argv[2]), args.endingport = atoi(argv[3]);
 	
     printf("\n[*] Starting scan at: %s port: %d end port: %d\n\n", argv[1], args.startingport, args.endingport);
     
@@ -67,8 +68,8 @@ int main(int argc, char** argv)
     		
 		}
     	
-	
 	}
+	
 	close(args.socket_initializer);
    
 }
