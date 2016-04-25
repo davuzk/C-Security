@@ -21,8 +21,7 @@ int main(int argc, char *argv[])
 	
 	if(argc != 2)
 		fprintf(stderr,"Usage: %s <password>\n", argv[0]);
-	if(argc != 2)
-		exit(-1);
+
 	passwd *pw;
 	pw = malloc(sizeof(passwd));
 	
