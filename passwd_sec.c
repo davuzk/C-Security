@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct
 {
@@ -37,7 +36,6 @@ int main(int argc, char *argv[])
 		printf("You got the right password!!\n");
 		rootaccess_privileges = 1;
 	}
-		
 	else
 	{
 		printf("Wrong password\n");
