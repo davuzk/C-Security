@@ -8,9 +8,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define LENGTH_PASSWD 200
+
 typedef struct
 {
-	char pass[200];	
+	char pass[LENGTH_PASSWD];	
 } passwd;
 
 int main(int argc, char *argv[])
