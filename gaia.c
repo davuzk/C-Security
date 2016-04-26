@@ -1,5 +1,5 @@
 /*
-# Name: Gaia (Gateway Analysis Interface Application).
+# Name: Gaia (Gateway Ana�ycis Interface Application).
 # Program type: Port scanner.
 # Author: Davuzk aka Dauxna/Thedabosk189
 # Date: 2015-09-27.
@@ -13,65 +13,61 @@
 
 #define NETWORK_ERROR -1
 
-struct cvsparser
+typedef struct
 {
 	const char *targethost_scan;
-	signed int socket_initializer;
-	signed int startingport;
-	signed int endingport;
-	signed int finalport;
-	signed int timerange;
-};
+	signed int starting_port;
+	signed int ending_port;
+	signed int final_port;
+} conection;
 
-/*--------------------------------------------------------------------------------------------------------------------------------*/
-
-void gaia_usage(const char *prog)
+void program_usage(char *msg)
 {
-	fprintf(stderr,"Usage: %s <target_host> <start port> <end port>\n", prog);
-	exit(-1);
+	fprintf(stderr,"Usage: %s -host <host> -port <start port> <end port>", msg);
+	exit(0);
 }
 
-/*--------------------------------------------------------------------------------------------------------------------------------*/
-
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-	
-    if(argc != 4)
-	gaia_usage(argv[0]);
-		
-    struct cvsparser args;
-    
+   	
     struct sockaddr_in addr;
 	
-    if((args.socket_initializer = socket(AF_INET, SOCK_STREAM, 0)) == NETWORK_ERROR)
-    {
-        printf("Could not create socket!\n");
-        exit(-1);
-    }
-    
-    args.startingport = atoi(argv[2]), args.endingport = atoi(argv[3]);
+    signed int sock_connectioncheck;
 	
-    printf("\n[*] Starting scan at: %s port: %d end port: %d\n\n", argv[1], args.startingport, args.endingport);
+    if(argc != 6)
+	program_usage(argv[0]);
     
-	for(args.finalport = args.startingport; args.finalport <= args.endingport; args.finalport++)
-	{
-		for(args.startingport = args.startingport; args.startingport<=args.endingport; args.startingport++)
-		{
+    conection *conc;
+	conc = malloc(sizeof(conection));
 
-			addr.sin_addr.s_addr = inet_addr(argv[1]);
+    if((sock_connectioncheck = socket(AF_INET, SOCK_STREAM, 0)) == -NETWORK_ERROR)
+        exit(1);
+    
+    
+    conc->targethost_scan = argv[2];
+    
+	conc->starting_port = atoi(argv[4]), conc->ending_port = atoi(argv[5]);
+	if(strncmp(argv[1], "-host", 5) == 0 || (strncmp(argv[3],"-port", 5) == 0))
+	{
+	
+	printf("\n[+] Starting scan at: %s port: %d end port: %d\n\n", argv[2], conc->starting_port, conc->ending_port);
+    
+	for(conc->final_port = conc->starting_port; conc->final_port <= conc->ending_port; ++conc->final_port)
+		for(conc->starting_port = conc->starting_port; conc->starting_port<=conc->ending_port; ++conc->starting_port)
+		{
+			addr.sin_addr.s_addr = inet_addr(conc->targethost_scan);
    			addr.sin_family = AF_INET;
-    		        addr.sin_port = htons(args.startingport);
+	    		addr.sin_port = htons(conc->starting_port);
 			
-			if(connect(args.socket_initializer,( struct sockaddr*)&addr, sizeof(addr)) < 0)
-       			    printf("[-] Port: %d/%d is closed at host: %s\n\n", args.startingport, args.endingport, argv[1]);
-    		        else
-        		    printf("[+] Port: %d/%d is open at host: %s\n\n", args.startingport, args.endingport, argv[1]);
+			if(connect(sock_connectioncheck,( struct sockaddr*)&addr, sizeof(addr)) < 0)
+       		            printf("[-] Port: %d/%d is closed at host: %s\n\n", conc->starting_port, conc->ending_port, conc->targethost_scan);
+    			else
+        		    printf("[+] Port: %d/%d is open at host: %s\n\n", conc->starting_port, conc->ending_port, conc->targethost_scan);
     		
 		}
     	
-	}
 	
-	close(args.socket_initializer);
-   
-}
+	}
+	close(sock_connectioncheck);
 
+}
