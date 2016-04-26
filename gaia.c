@@ -38,23 +38,22 @@ int main(int argc, char* argv[])
 	program_usage(argv[0]);
     
     conection *conc;
-	conc = malloc(sizeof(conection));
+    conc = malloc(sizeof(conection));
 
     if((sock_connectioncheck = socket(AF_INET, SOCK_STREAM, 0)) == -NETWORK_ERROR)
         exit(1);
     
-    
     conc->targethost_scan = argv[2];
     
-	conc->starting_port = atoi(argv[4]), conc->ending_port = atoi(argv[5]);
-	if(strncmp(argv[1], "-host", 5) == 0 || (strncmp(argv[3],"-port", 5) == 0))
-	{
-	
+    conc->starting_port = atoi(argv[4]), conc->ending_port = atoi(argv[5]);
+    if(strncmp(argv[1], "-host", 5) == 0 || (strncmp(argv[3],"-port", 5) == 0))
+    {
 	printf("\n[+] Starting scan at: %s port: %d end port: %d\n\n", argv[2], conc->starting_port, conc->ending_port);
     
 	for(conc->final_port = conc->starting_port; conc->final_port <= conc->ending_port; ++conc->final_port)
 		for(conc->starting_port = conc->starting_port; conc->starting_port<=conc->ending_port; ++conc->starting_port)
 		{
+			
 			addr.sin_addr.s_addr = inet_addr(conc->targethost_scan);
    			addr.sin_family = AF_INET;
 	    		addr.sin_port = htons(conc->starting_port);
@@ -65,9 +64,9 @@ int main(int argc, char* argv[])
         		    printf("[+] Port: %d/%d is open at host: %s\n\n", conc->starting_port, conc->ending_port, conc->targethost_scan);
     		
 		}
-    	
 	
 	}
+	
 	close(sock_connectioncheck);
 
 }
