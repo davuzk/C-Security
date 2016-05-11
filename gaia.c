@@ -7,6 +7,7 @@
 
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -34,7 +35,7 @@ int main(int argc, char* argv[])
    	
    struct sockaddr_in addr;
 	
-   if(argc != 6)
+   if(argc != 4)
        program_usage(argv[0]);
     
     conection *conc;
@@ -43,13 +44,14 @@ int main(int argc, char* argv[])
     if((conc->sock_connectioncheck = socket(AF_INET, SOCK_STREAM, 0)) == -NETWORK_ERROR)
         exit(1);
     
-    conc->targethost_scan = argv[2];
+    conc->targethost_scan = argv[1];
     
-    conc->starting_port = atoi(argv[4]), conc->ending_port = atoi(argv[5]);
+    conc->starting_port = atoi(argv[2]), conc->ending_port = atoi(argv[3]);
     
-    if(strncmp(argv[1], "-host", 5) == 0 || (strncmp(argv[3],"-port", 5) == 0))
-         printf("\n[+] Starting scan at: %s port: %d end port: %d\n\n", argv[2], conc->starting_port, conc->ending_port);
-	 for(conc->final_port = conc->starting_port; conc->final_port <= conc->ending_port; ++conc->final_port)
+    
+	printf("\n[+] Starting scan at: %s port: %d end port: %d\n\n", argv[1], conc->starting_port, conc->ending_port);
+	
+	for(conc->final_port = conc->starting_port; conc->final_port <= conc->ending_port; ++conc->final_port)
 	     for(conc->starting_port = conc->starting_port; conc->starting_port<=conc->ending_port; ++conc->starting_port)
 	     {
 
@@ -67,4 +69,3 @@ int main(int argc, char* argv[])
 	close(conc->sock_connectioncheck);
 
 }
-
