@@ -1,5 +1,6 @@
 ; gcc -S gaia.c
 ; gcc -o gaia gaia.s
+
 	.file	"gaia.c"
 	.section	.rodata
 	.align 8
