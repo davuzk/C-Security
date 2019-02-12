@@ -1,7 +1,7 @@
 /*
 * Password secure in C.
 * Purpose: Prevent buffer overflow attack.
-* Author: Davuzk
+* Author: Struct
 */
 
 #include <stdio.h>
